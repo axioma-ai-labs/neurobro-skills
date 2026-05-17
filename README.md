@@ -1,4 +1,8 @@
-# Neurobro Skills
+<p align="center">
+  <img src="assets/neurobro-skills.png" alt="Neurobro Skills: Agent skills for the NeuroAPI financial market research API" width="100%">
+</p>
+
+<h1 align="center">Neurobro Skills</h1>
 
 Agent skills for **[NeuroAPI](https://neuroapi.neurobro.ai)** - Neurobro's
 paid public API for financial market research. These skills teach AI coding

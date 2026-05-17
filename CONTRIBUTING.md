@@ -35,7 +35,11 @@
 
 5. Add a row to the skills table in [`README.md`](README.md).
 
-6. Validate before committing:
+6. Add the skill to the "Using the skills" list in
+   [`agents/AGENTS.md`](agents/AGENTS.md) - that file is the shared context for
+   non-Claude agents and must list every skill.
+
+7. Validate before committing:
 
    ```bash
    node scripts/validate-skills.mjs
@@ -51,3 +55,6 @@
   imperative.
 - Document failure modes (error codes, rate limits) - agents need them to
   recover.
+- Keep each skill self-contained. A skill can be installed on its own, so it
+  must not link to files in a sibling skill - bundle what it needs under its
+  own `references/`.

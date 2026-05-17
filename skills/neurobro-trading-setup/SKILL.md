@@ -48,9 +48,8 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
   -d '{"prompt": "<your prompt>", "mode": "smart"}' | jq -r .answer
 ```
 
-For the full request/response schema, status codes, rate limits, and key
-setup, see the `neurobro-market-research` skill and its
-`references/endpoints.md`.
+For the full request/response schema, status codes, and rate limits, see
+[references/endpoints.md](references/endpoints.md).
 
 ## The workflow: context, setup, validate
 
@@ -183,6 +182,6 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 
 ## Reference
 
-Full NeuroAPI endpoint reference - request/response schema, status codes,
-rate limits, and key setup - lives in the `neurobro-market-research` skill
-(`references/endpoints.md`). Official docs: <https://neuroapi.neurobro.ai/docs>.
+Full NeuroAPI endpoint reference - request/response schema, status codes, and
+rate limits: [references/endpoints.md](references/endpoints.md). Official docs:
+<https://neuroapi.neurobro.ai/docs>.

@@ -203,6 +203,8 @@ error class:
   to sort out billing, then stop.
 - **Adjust, then retry** - `403 mode_not_in_plan`: the `mode` isn't on the
   caller's plan; retry with `smart` or `fast`.
+- **Wait, then retry** - `409`: a call with the same `Idempotency-Key` is
+  still in flight; wait briefly, then retry the same request.
 - **Back off and retry** - `429` (honour `Retry-After`, cap at 3 attempts) and
   `503` (agent saturated; exponential backoff; no quota charged).
 - **`500`** - server-side bug; retry only idempotent calls, once.
