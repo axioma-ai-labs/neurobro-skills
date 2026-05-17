@@ -5,7 +5,7 @@ description: Run financial market research through the NeuroAPI agent — equity
 
 # Neurobro Market Research
 
-NeuroAPI is Axioma AI's paid public API. Its `/agent/ask` endpoint runs a
+NeuroAPI is Neurobro's paid public API. Its `/agent/ask` endpoint runs a
 financial research agent that answers natural-language questions about
 equities, crypto, macro, and cross-asset markets. This skill teaches an agent
 how to call it correctly — picking the right intelligence tier, handling
@@ -42,8 +42,9 @@ reasoning, not an order router or a market-data feed.
 The API key is read from the `NEUROAPI_API_KEY` environment variable. **Never
 hardcode it in source, never print it, never paste it into a commit.**
 
-1. Mint a key in the NeuroAPI dashboard → **API Keys** → **Create key**. The
-   secret is shown once; keys look like `neuro_<random>`.
+1. Create a key in the NeuroAPI dashboard at <https://neuroapi.neurobro.ai>
+   → **API Keys** → **Create key**. The secret is shown once; keys look like
+   `neuro_<random>`.
 2. Make sure the account has an active plan in **Pricing** — `/agent/ask`
    returns `402` without one.
 3. Provide the key to the environment. For local use, copy `.env.example` to
@@ -232,5 +233,6 @@ batch research, pace off `X-RateLimit-Remaining` so you never hit `429`.
 
 ## Reference
 
-Full request/response schemas, status codes, and headers:
-[references/endpoints.md](references/endpoints.md).
+- Full request/response schemas, status codes, and headers:
+  [references/endpoints.md](references/endpoints.md)
+- Official NeuroAPI documentation: <https://neuroapi.neurobro.ai/docs>
