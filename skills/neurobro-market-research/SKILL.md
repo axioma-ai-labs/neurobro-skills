@@ -1,11 +1,12 @@
 ---
 name: neurobro-market-research
-description: Run financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask. Use when the user asks for stock or token analysis, trade ideas, market commentary, earnings or macro questions, sector comparisons, or any financial research that needs live market reasoning.
+description: Runs financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask. Use when the user asks for stock or token analysis, trade ideas, market commentary, earnings or macro questions, sector comparisons, or any financial research that needs live market reasoning.
+license: MIT
 ---
 
 # Neurobro Market Research
 
-NeuroAPI is Axioma AI's paid public API. Its `/agent/ask` endpoint runs a
+NeuroAPI is Neurobro's paid public API. Its `/agent/ask` endpoint runs a
 financial research agent that answers natural-language questions about
 equities, crypto, macro, and cross-asset markets. This skill teaches an agent
 how to call it correctly — picking the right intelligence tier, handling
@@ -42,8 +43,9 @@ reasoning, not an order router or a market-data feed.
 The API key is read from the `NEUROAPI_API_KEY` environment variable. **Never
 hardcode it in source, never print it, never paste it into a commit.**
 
-1. Mint a key in the NeuroAPI dashboard → **API Keys** → **Create key**. The
-   secret is shown once; keys look like `neuro_<random>`.
+1. Create a key in the NeuroAPI dashboard at <https://neuroapi.neurobro.ai>
+   → **API Keys** → **Create key**. The secret is shown once; keys look like
+   `neuro_<random>`.
 2. Make sure the account has an active plan in **Pricing** — `/agent/ask`
    returns `402` without one.
 3. Provide the key to the environment. For local use, copy `.env.example` to
@@ -192,35 +194,32 @@ trade.
 
 ## Errors and retries
 
-Error bodies have one shape: `{"detail": "..."}`. Every error carries an
-`X-Request-Id` header.
+Error bodies are `{"detail": "..."}`, and every error carries an
+`X-Request-Id` header — quote it when reporting issues. Decide what to do by
+error class:
 
-| Code | Meaning | Action |
-| --- | --- | --- |
-| `400` | Malformed body or invalid `Idempotency-Key` | Fix the request; don't retry blindly. |
-| `401` | Missing/invalid `X-API-Key` | Check `NEUROAPI_API_KEY`; do not retry. |
-| `402` | No active plan, or quota exhausted | Stop; tell the user to fix billing. |
-| `403` | `mode` not on plan (`code: mode_not_in_plan`) | Retry with `smart` or `fast`. |
-| `409` | Same `Idempotency-Key` still in flight | Wait, then retry. |
-| `422` | Body failed validation | Read `loc`/`msg`; fix the field. |
-| `429` | Rate limit exceeded | Honour `Retry-After`; back off (≤3 tries). |
-| `503` | Agent capacity saturated | Retry with exponential backoff; no quota charged. |
-| `500` | Server-side bug | Retry idempotent calls once; report `X-Request-Id`. |
+- **Don't retry** — `400`, `401`, `402`, `422`: the request or account is
+  wrong. Fix the body, check `NEUROAPI_API_KEY`, or (on `402`) tell the user
+  to sort out billing, then stop.
+- **Adjust, then retry** — `403 mode_not_in_plan`: the `mode` isn't on the
+  caller's plan; retry with `smart` or `fast`.
+- **Back off and retry** — `429` (honour `Retry-After`, cap at 3 attempts) and
+  `503` (agent saturated; exponential backoff; no quota charged).
+- **`500`** — server-side bug; retry only idempotent calls, once.
 
 `/agent/ask` is **non-idempotent** unless you send an `Idempotency-Key` — two
-plain calls produce two answers and two charges. Don't retry blindly on `500`.
+plain calls produce two answers and two charges, so never retry blindly.
+
+The full status-code table is in
+[references/endpoints.md](references/endpoints.md).
 
 ## Rate limits
 
 Every response carries `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and
-`X-RateLimit-Reset`. On `429`, `Retry-After` gives seconds until reset. For
-batch research, pace off `X-RateLimit-Remaining` so you never hit `429`.
-
-| Plan | `/agent/ask` per minute |
-| --- | --- |
-| Starter | 60 |
-| Pro | 60 |
-| Enterprise | 300 (negotiable) |
+`X-RateLimit-Reset`. On `429`, `Retry-After` gives the seconds until reset.
+For batch research, pace off `X-RateLimit-Remaining` so you never hit `429`.
+Per-plan budgets and header details are in
+[references/endpoints.md](references/endpoints.md).
 
 ## Security
 
@@ -232,5 +231,6 @@ batch research, pace off `X-RateLimit-Remaining` so you never hit `429`.
 
 ## Reference
 
-Full request/response schemas, status codes, and headers:
-[references/endpoints.md](references/endpoints.md).
+- Full request/response schemas, status codes, and headers:
+  [references/endpoints.md](references/endpoints.md)
+- Official NeuroAPI documentation: <https://neuroapi.neurobro.ai/docs>

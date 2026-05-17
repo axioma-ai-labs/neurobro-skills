@@ -1,22 +1,24 @@
 # Neurobro Skills
 
-Agent skills for [NeuroAPI](https://api.neurobro.ai) — Axioma AI's paid public
-API for financial market research. These skills teach AI coding agents
-(Claude Code, Cursor, Codex, Gemini CLI, and others) how to call NeuroAPI
-correctly: picking the right intelligence tier, handling billing and rate
-limits, and writing prompts that produce useful research.
+Agent skills for **[NeuroAPI](https://neuroapi.neurobro.ai)** — Neurobro's
+paid public API for financial market research. These skills teach AI coding
+agents (Claude Code, Cursor, Codex, Gemini CLI, and others) how to call
+NeuroAPI correctly: choosing the right intelligence tier, handling billing
+and rate limits, and writing prompts that produce useful research.
+
+**[Create an API key →](https://neuroapi.neurobro.ai)**  ·  **[Read the docs →](https://neuroapi.neurobro.ai/docs)**
 
 ## Skills
 
 | Skill | What it does |
 | --- | --- |
-| [`neurobro-market-research`](skills/neurobro-market-research/) | Run financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
+| [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
 
-More skills are added over time; every skill name is prefixed `neurobro-`.
+Every skill name is prefixed `neurobro-`; more are added over time.
 
 ## Install
 
-With the [`skills`](https://www.skills.sh) CLI (any supported agent):
+With the [`skills`](https://www.skills.sh) CLI (works with any supported agent):
 
 ```bash
 npx skills add axioma-ai-labs/neurobro-skills
@@ -31,8 +33,8 @@ Or as a Claude Code plugin:
 
 ## Setup
 
-1. Mint an API key in the NeuroAPI dashboard → **API Keys**. Keys look like
-   `neuro_<random>` and are shown once.
+1. [Create an API key](https://neuroapi.neurobro.ai) in the NeuroAPI dashboard
+   under **API Keys**. Keys look like `neuro_<random>` and are shown only once.
 2. Make sure the account has an active plan — `/agent/ask` requires one.
 3. Provide the key via the `NEUROAPI_API_KEY` environment variable:
 
@@ -41,8 +43,8 @@ Or as a Claude Code plugin:
    export NEUROAPI_API_KEY="neuro_..."
    ```
 
-`.env` is git-ignored — the real key never gets committed. `.env.example` is
-the committed template and contains no secret.
+`.env` is git-ignored, so the real key is never committed. `.env.example` is
+the committed template and holds no secret.
 
 ## Repo layout
 
@@ -56,7 +58,7 @@ skills/              One directory per skill, each with a SKILL.md
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to add a new skill.
+New skills welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

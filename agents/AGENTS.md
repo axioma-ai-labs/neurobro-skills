@@ -1,6 +1,6 @@
 # Neurobro Skills — agent context
 
-This repository provides skills for working with **NeuroAPI**, Axioma AI's
+This repository provides skills for working with **NeuroAPI**, Neurobro's
 paid public API for financial market research.
 
 ## What NeuroAPI is
