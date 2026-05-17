@@ -26,6 +26,42 @@
       ],
       "category": "data-extraction",
       "version": "0.1.0"
+    },
+    {
+      "name": "neurobro-meme-hunting",
+      "source": "./skills/neurobro-meme-hunting",
+      "skills": "./",
+      "description": "Discover and risk-vet trending and newly launched memecoins through the NeuroAPI agent — scan trending DEX pools, filter by liquidity and age, and audit tokens for honeypots, rug-pull risk, and holder concentration",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "memecoin",
+        "meme-hunting",
+        "crypto",
+        "rug-pull",
+        "honeypot",
+        "token-audit"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
+    },
+    {
+      "name": "neurobro-trading-setup",
+      "source": "./skills/neurobro-trading-setup",
+      "skills": "./",
+      "description": "Build structured trade setups through the NeuroAPI agent — entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "trading-setup",
+        "trade-plan",
+        "crypto",
+        "stocks",
+        "technical-analysis",
+        "risk-reward"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
     }
   ]
 }

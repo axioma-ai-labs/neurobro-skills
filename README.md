@@ -13,6 +13,8 @@ and rate limits, and writing prompts that produce useful research.
 | Skill | What it does |
 | --- | --- |
 | [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
+| [`neurobro-meme-hunting`](skills/neurobro-meme-hunting/) | Discover and risk-vet trending and newly launched memecoins — scan trending DEX pools, filter by liquidity and age, audit for honeypots, rug-pull risk, and holder concentration. |
+| [`neurobro-trading-setup`](skills/neurobro-trading-setup/) | Build structured trade setups — entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. |
 
 Every skill name is prefixed `neurobro-`; more are added over time.
 
