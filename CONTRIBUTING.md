@@ -56,5 +56,5 @@
 - Document failure modes (error codes, rate limits) - agents need them to
   recover.
 - Keep each skill self-contained. A skill can be installed on its own, so it
-  must not link to files in a sibling skill - bundle what it needs under its
-  own `references/`.
+  must not link to files in a sibling skill - inline what it needs, or link to
+  the official docs at <https://neuroapi.neurobro.ai/docs>.

@@ -49,8 +49,8 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
   -d '{"prompt": "<your prompt>", "mode": "smart"}' | jq -r .answer
 ```
 
-For the full request/response schema, status codes, and rate limits, see
-[references/endpoints.md](references/endpoints.md).
+For the full request/response schema, status codes, and rate limits, see the
+official docs: <https://neuroapi.neurobro.ai/docs>.
 
 ## The hunt: discover, filter, audit, rank
 
@@ -179,5 +179,4 @@ routinely go to zero on momentum alone.
 ## Reference
 
 Full NeuroAPI endpoint reference - request/response schema, status codes, and
-rate limits: [references/endpoints.md](references/endpoints.md). Official docs:
-<https://neuroapi.neurobro.ai/docs>.
+rate limits - is in the official docs: <https://neuroapi.neurobro.ai/docs>.
