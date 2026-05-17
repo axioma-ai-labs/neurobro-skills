@@ -1,20 +1,20 @@
 # Neurobro Skills
 
-Agent skills for **[NeuroAPI](https://neuroapi.neurobro.ai)** — Neurobro's
+Agent skills for **[NeuroAPI](https://neuroapi.neurobro.ai)** - Neurobro's
 paid public API for financial market research. These skills teach AI coding
 agents (Claude Code, Cursor, Codex, Gemini CLI, and others) how to call
 NeuroAPI correctly: choosing the right intelligence tier, handling billing
 and rate limits, and writing prompts that produce useful research.
 
-**[Create an API key →](https://neuroapi.neurobro.ai)**  ·  **[Read the docs →](https://neuroapi.neurobro.ai/docs)**
+[Create an API key](https://neuroapi.neurobro.ai) or [read the docs](https://neuroapi.neurobro.ai/docs).
 
 ## Skills
 
 | Skill | What it does |
 | --- | --- |
-| [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
-| [`neurobro-meme-hunting`](skills/neurobro-meme-hunting/) | Discover and risk-vet trending and newly launched memecoins — scan trending DEX pools, filter by liquidity and age, audit for honeypots, rug-pull risk, and holder concentration. |
-| [`neurobro-trading-setup`](skills/neurobro-trading-setup/) | Build structured trade setups — entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. |
+| [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
+| [`neurobro-meme-hunting`](skills/neurobro-meme-hunting/) | Discover and risk-vet trending and newly launched memecoins - scan trending DEX pools, filter by liquidity and age, audit for honeypots, rug-pull risk, and holder concentration. |
+| [`neurobro-trading-setup`](skills/neurobro-trading-setup/) | Build structured trade setups - entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. |
 
 Every skill name is prefixed `neurobro-`; more are added over time.
 
@@ -37,7 +37,7 @@ Or as a Claude Code plugin:
 
 1. [Create an API key](https://neuroapi.neurobro.ai) in the NeuroAPI dashboard
    under **API Keys**. Keys look like `neuro_<random>` and are shown only once.
-2. Make sure the account has an active plan — `/agent/ask` requires one.
+2. Make sure the account has an active plan - `/agent/ask` requires one.
 3. Provide the key via the `NEUROAPI_API_KEY` environment variable:
 
    ```bash
@@ -52,16 +52,16 @@ the committed template and holds no secret.
 
 ```
 .claude-plugin/      Claude Code plugin marketplace manifests
-.github/workflows/   CI — validates every SKILL.md on push
+.github/workflows/   CI - validates every SKILL.md on push
 agents/              Shared context for non-Claude agents (Codex, Gemini)
-scripts/             validate-skills.mjs — frontmatter checker
+scripts/             validate-skills.mjs - frontmatter checker
 skills/              One directory per skill, each with a SKILL.md
 ```
 
 ## Contributing
 
-New skills welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+New skills welcome - see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).

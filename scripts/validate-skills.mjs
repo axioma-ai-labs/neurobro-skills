@@ -64,4 +64,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`OK — ${dirs.length} skill(s) validated.`);
+console.log(`OK - ${dirs.length} skill(s) validated.`);

@@ -1,6 +1,6 @@
 ---
 name: neurobro-trading-setup
-description: Builds structured trade setups through the NeuroAPI agent — entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto or stock asset.
+description: Builds structured trade setups through the NeuroAPI agent - entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto or stock asset.
 license: MIT
 ---
 
@@ -10,9 +10,9 @@ NeuroAPI's `/agent/ask` agent can read technical analysis (RSI, MACD,
 Bollinger Bands, support/resistance) and crypto derivatives positioning
 (funding, open interest, long/short ratio), and assemble them into a
 structured trade setup. This skill turns that into a repeatable workflow that
-produces a complete, validated trade plan — not a vague opinion.
+produces a complete, validated trade plan - not a vague opinion.
 
-## Not financial advice — read this first
+## Not financial advice - read this first
 
 A trade setup is a **hypothesis with a defined invalidation point**, not a
 prediction and not a recommendation. Markets are uncertain; any setup can
@@ -38,7 +38,7 @@ Every request goes to one endpoint:
 `POST https://api.neurobro.ai/api/v1/agent/ask`
 
 Authenticate with the `X-API-Key` header, reading the key from the
-`NEUROAPI_API_KEY` environment variable — never hardcode it. The body takes a
+`NEUROAPI_API_KEY` environment variable - never hardcode it. The body takes a
 `prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`).
 
 ```bash
@@ -52,12 +52,12 @@ For the full request/response schema, status codes, rate limits, and key
 setup, see the `neurobro-market-research` skill and its
 `references/endpoints.md`.
 
-## The workflow: context → setup → validate
+## The workflow: context, setup, validate
 
 ### 1. Gather context
 
 Before asking for levels, have the agent read the market. Always specify the
-**asset** and a **timeframe** — a setup is meaningless without one.
+**asset** and a **timeframe** - a setup is meaningless without one.
 
 ```
 Give me the current technical picture for $SOL on the 4-hour timeframe:
@@ -89,14 +89,14 @@ Ground it in current technicals and perp funding/open interest.
 
 Never pass a setup through unchecked. Confirm:
 
-- **Risk/reward** — generally aim for **≥ 2:1** to the first meaningful
+- **Risk/reward** - generally aim for **2:1 or better** to the first meaningful
   target. A setup with R:R below ~1.5:1 rarely justifies the trade.
-- **Stop placement** — the stop must sit *beyond a structural level* (below
+- **Stop placement** - the stop must sit *beyond a structural level* (below
   support for a long, above resistance for a short), not at an arbitrary
   percentage. If the stop is arbitrary, ask the agent to re-anchor it.
-- **Invalidation** — there must be a clear price at which the thesis is wrong.
+- **Invalidation** - there must be a clear price at which the thesis is wrong.
   No invalidation level means no setup.
-- **Position size** — risk per trade ÷ entry-to-stop distance. See below.
+- **Position size** - risk per trade / entry-to-stop distance. See below.
 
 If any check fails, send the setup back to the agent with the specific
 problem rather than accepting it.
@@ -109,9 +109,9 @@ A complete trade setup contains:
 | --- | --- |
 | Direction | Long or short, with a one-line rationale. |
 | Entry zone | A price *range* to scale into, not a single price. |
-| Stop-loss | The exit if wrong — placed beyond a structural level. |
+| Stop-loss | The exit if wrong - placed beyond a structural level. |
 | Invalidation | The price/level that proves the thesis wrong. |
-| Take-profit | TP1, TP2 (optionally TP3) — where to take partial profit. |
+| Take-profit | TP1, TP2 (optionally TP3) - where to take partial profit. |
 | Risk/reward | R:R to each target, computed from entry, stop, and TP. |
 | Timeframe | The horizon the setup is valid for. |
 | Caveats | What would change the picture (e.g. a macro print, funding flip). |
@@ -125,8 +125,9 @@ position size = (account risk per trade) / (entry-to-stop distance)
 ```
 
 Example: risking 1% of a $10,000 account ($100) on a trade with a 5%
-entry-to-stop distance → position size ≈ $100 / 0.05 = $2,000. Keep risk per
-trade small and fixed; the stop distance, not conviction, sets the size.
+entry-to-stop distance gives a position size of about $100 / 0.05 = $2,000.
+Keep risk per trade small and fixed; the stop distance, not conviction, sets
+the size.
 
 ## Recipes
 
@@ -165,23 +166,23 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 
 ## Choosing a mode
 
-- `smart` (default) — the right choice for most setups; it reasons over
+- `smart` (default) - the right choice for most setups; it reasons over
   technicals and derivatives positioning together.
-- `max` — multi-asset setups, conflicting signals, or higher-stakes plans
+- `max` - multi-asset setups, conflicting signals, or higher-stakes plans
   where the deepest reasoning is worth the extra cost.
-- `fast` — only for a quick level check where you do not need full context.
+- `fast` - only for a quick level check where you do not need full context.
 
 ## Risk notes
 
 - A setup is a hypothesis. Always trade with the stop; never widen a stop to
   avoid being stopped out.
-- Elevated funding or stretched open interest means a crowded trade — size
+- Elevated funding or stretched open interest means a crowded trade - size
   down, expect sharper reversals.
 - Markets gap and slip; the stop is a plan, not a guarantee of fill price.
 - Restate it to the user: this is structured research, not financial advice.
 
 ## Reference
 
-Full NeuroAPI endpoint reference — request/response schema, status codes,
-rate limits, and key setup — lives in the `neurobro-market-research` skill
+Full NeuroAPI endpoint reference - request/response schema, status codes,
+rate limits, and key setup - lives in the `neurobro-market-research` skill
 (`references/endpoints.md`). Official docs: <https://neuroapi.neurobro.ai/docs>.
