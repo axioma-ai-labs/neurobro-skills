@@ -44,15 +44,15 @@ Runs the NeuroAPI financial research agent. Billable.
 | --- | --- | --- |
 | `X-API-Key` | yes | `neuro_...` secret. |
 | `Content-Type` | yes | `application/json`. |
-| `Idempotency-Key` | no | 1–255 printable ASCII chars. Safe-retries the call; reusing it with a different body returns `422`. |
+| `Idempotency-Key` | no | 1-255 printable ASCII chars. Safe-retries the call; reusing it with a different body returns `422`. |
 
-### Request body — `AgentAskRequest`
+### Request body - `AgentAskRequest`
 
 | Field | Type | Default | Constraints |
 | --- | --- | --- | --- |
-| `prompt` | string | — (required) | 1–32,000 chars. |
+| `prompt` | string | - (required) | 1-32,000 chars. |
 | `mode` | `"fast"` \| `"smart"` \| `"max"` | `"smart"` | `max` requires Pro+. |
-| `stream` | boolean | `false` | `true` → SSE response. |
+| `stream` | boolean | `false` | When `true`, an SSE response. |
 | `message_history` | array of `ChatMessage` | `null` | Max 50 messages. |
 
 `ChatMessage`:
@@ -62,7 +62,7 @@ Runs the NeuroAPI financial research agent. Billable.
 | `role` | string | `"user"` or `"assistant"`. |
 | `content` | string | Max 32,000 chars. |
 
-Mode names are opaque tier labels — the underlying model is not revealed and
+Mode names are opaque tier labels - the underlying model is not revealed and
 may change without notice on the same label.
 
 ### Cost per mode
@@ -73,7 +73,7 @@ may change without notice on the same label.
 | `smart` | 2 | all |
 | `max` | 8 | Pro, Enterprise |
 
-### Sync response — `AgentAskResponse` (`stream=false`)
+### Sync response - `AgentAskResponse` (`stream=false`)
 
 ```json
 {
@@ -98,19 +98,19 @@ may change without notice on the same label.
 `Content-Type: text/event-stream`. Each event is one `TaskResponseMessage`
 JSON object on a `data:` line. Success terminates with `data: [DONE]\n\n`.
 On error, a `data: {"type":"error",...}` event is emitted and the stream
-closes with no `[DONE]` — the terminator is the only success signal.
+closes with no `[DONE]` - the terminator is the only success signal.
 
 ### Status codes
 
 | Code | Meaning | Retry |
 | --- | --- | --- |
-| `200` | Success | — |
+| `200` | Success | - |
 | `400` | Malformed body or invalid `Idempotency-Key` | No |
 | `401` | Missing/invalid `X-API-Key` | No |
-| `402` | No active subscription, or quota exhausted | No — fix billing |
-| `403` | `mode` not on plan (`code: mode_not_in_plan`) | No — lower the mode |
+| `402` | No active subscription, or quota exhausted | No - fix billing |
+| `403` | `mode` not on plan (`code: mode_not_in_plan`) | No - lower the mode |
 | `409` | Same `Idempotency-Key` still in flight | Yes, after a wait |
-| `422` | Request body validation error | No — fix the body |
+| `422` | Request body validation error | No - fix the body |
 | `429` | Rate limit exceeded | Yes, after `Retry-After` |
 | `500` | Server-side bug | Maybe (idempotent calls only) |
 | `503` | Agent capacity saturated | Yes, with backoff |

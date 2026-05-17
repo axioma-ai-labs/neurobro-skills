@@ -1,6 +1,6 @@
 ---
 name: neurobro-market-research
-description: Runs financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask. Use when the user asks for stock or token analysis, trade ideas, market commentary, earnings or macro questions, sector comparisons, or any financial research that needs live market reasoning.
+description: Runs financial market research through the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask. Use when the user asks for stock or token analysis, trade ideas, market commentary, earnings or macro questions, sector comparisons, or any financial research that needs live market reasoning.
 license: MIT
 ---
 
@@ -9,7 +9,7 @@ license: MIT
 NeuroAPI is Neurobro's paid public API. Its `/agent/ask` endpoint runs a
 financial research agent that answers natural-language questions about
 equities, crypto, macro, and cross-asset markets. This skill teaches an agent
-how to call it correctly — picking the right intelligence tier, handling
+how to call it correctly - picking the right intelligence tier, handling
 billing and rate limits, and writing prompts that produce useful research.
 
 ## Quick start
@@ -31,11 +31,11 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 - Researching a single stock or token (fundamentals, technicals, narrative)
 - Building bull/bear cases or trade setups
 - Comparing assets, sectors, or factors
-- Macro questions — rates, inflation, central-bank outlooks
+- Macro questions - rates, inflation, central-bank outlooks
 - Deep multi-asset investigations that need broad market coverage
 
 Do **not** use this skill for trade execution, portfolio custody, or anything
-requiring guaranteed real-time quotes — NeuroAPI returns research and
+requiring guaranteed real-time quotes - NeuroAPI returns research and
 reasoning, not an order router or a market-data feed.
 
 ## Prerequisites
@@ -43,10 +43,10 @@ reasoning, not an order router or a market-data feed.
 The API key is read from the `NEUROAPI_API_KEY` environment variable. **Never
 hardcode it in source, never print it, never paste it into a commit.**
 
-1. Create a key in the NeuroAPI dashboard at <https://neuroapi.neurobro.ai>
-   → **API Keys** → **Create key**. The secret is shown once; keys look like
-   `neuro_<random>`.
-2. Make sure the account has an active plan in **Pricing** — `/agent/ask`
+1. Create a key in the NeuroAPI dashboard at <https://neuroapi.neurobro.ai>:
+   open **API Keys** and click **Create key**. The secret is shown once; keys
+   look like `neuro_<random>`.
+2. Make sure the account has an active plan in **Pricing** - `/agent/ask`
    returns `402` without one.
 3. Provide the key to the environment. For local use, copy `.env.example` to
    `.env` (already git-ignored) and fill in `NEUROAPI_API_KEY`, then export it:
@@ -56,11 +56,11 @@ hardcode it in source, never print it, never paste it into a commit.**
    export NEUROAPI_API_KEY="neuro_..."
    ```
 
-Verify before doing real work — `/health` is free and consumes no quota:
+Verify before doing real work - `/health` is free and consumes no quota:
 
 ```bash
 curl -s https://api.neurobro.ai/api/v1/health \
-  -H "X-API-Key: $NEUROAPI_API_KEY" | jq .authenticated   # → true
+  -H "X-API-Key: $NEUROAPI_API_KEY" | jq .authenticated   # returns true
 ```
 
 ## The endpoint
@@ -71,16 +71,16 @@ curl -s https://api.neurobro.ai/api/v1/health \
 | --- | --- |
 | `X-API-Key` | `neuro_...` (required) |
 | `Content-Type` | `application/json` |
-| `Idempotency-Key` | Optional. 1–255 printable ASCII chars; safe-retries a call. |
+| `Idempotency-Key` | Optional. 1-255 printable ASCII chars; safe-retries a call. |
 
 Request body:
 
 | Field | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `prompt` | string | — | Required. 1–32,000 chars. The research question. |
+| `prompt` | string | - | Required. 1-32,000 chars. The research question. |
 | `mode` | enum | `smart` | `fast` \| `smart` \| `max`. See tiers below. |
-| `stream` | bool | `false` | `true` → SSE stream ending in `data: [DONE]\n\n`. |
-| `message_history` | array | `null` | Prior turns (max 50). Stateless — caller owns it. |
+| `stream` | bool | `false` | When `true`, an SSE stream ending in `data: [DONE]\n\n`. |
+| `message_history` | array | `null` | Prior turns (max 50). Stateless - caller owns it. |
 
 Response (`stream=false`):
 
@@ -93,7 +93,7 @@ Response (`stream=false`):
 }
 ```
 
-`request_id` is also returned in the `X-Request-Id` header — quote it when
+`request_id` is also returned in the `X-Request-Id` header - quote it when
 reporting issues.
 
 ## Choosing a mode
@@ -110,10 +110,10 @@ deliberately.
 - Default to `smart` for genuine research questions.
 - Use `fast` only for shallow lookups where depth doesn't matter.
 - Use `max` when the question spans many assets or demands the deepest
-  reasoning. Calling `max` on a Starter key returns `403 mode_not_in_plan` —
+  reasoning. Calling `max` on a Starter key returns `403 mode_not_in_plan` -
   fall back to `smart` rather than failing the task.
 - `cost_units` is what gets debited from billable quota. Don't reach for `max`
-  by reflex; it costs 4× a `smart` call.
+  by reflex; it costs 4x a `smart` call.
 
 ## Recipes
 
@@ -131,7 +131,7 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 ### Follow-up questions (multi-turn)
 
 The API is stateless. To ask a follow-up, replay prior turns in
-`message_history` — roles are `"user"` and `"assistant"`.
+`message_history` - roles are `"user"` and `"assistant"`.
 
 ```python
 import os, httpx
@@ -178,12 +178,12 @@ curl -N https://api.neurobro.ai/api/v1/agent/ask \
 
 The agent rewards specific, scoped prompts. For useful financial research:
 
-- **Name the asset(s) precisely** — ticker plus exchange or chain when
+- **Name the asset(s) precisely** - ticker plus exchange or chain when
   ambiguous (`NVDA`, `BTC`, `ETH on mainnet`).
-- **State the angle** — fundamentals, technicals, valuation, catalysts, risk.
-- **Bound the timeframe** — "next two quarters", "into 2026", "since the last
+- **State the angle** - fundamentals, technicals, valuation, catalysts, risk.
+- **Bound the timeframe** - "next two quarters", "into 2026", "since the last
   earnings call". Markets move; an unbounded prompt invites stale framing.
-- **Ask for structure** — "give bull case, bear case, and key risks" produces
+- **Ask for structure** - "give bull case, bear case, and key risks" produces
   far more usable output than "what do you think about X".
 - **One question per call** for clean answers; use `message_history` to drill
   down rather than stuffing five questions into one prompt.
@@ -195,19 +195,19 @@ trade.
 ## Errors and retries
 
 Error bodies are `{"detail": "..."}`, and every error carries an
-`X-Request-Id` header — quote it when reporting issues. Decide what to do by
+`X-Request-Id` header - quote it when reporting issues. Decide what to do by
 error class:
 
-- **Don't retry** — `400`, `401`, `402`, `422`: the request or account is
+- **Don't retry** - `400`, `401`, `402`, `422`: the request or account is
   wrong. Fix the body, check `NEUROAPI_API_KEY`, or (on `402`) tell the user
   to sort out billing, then stop.
-- **Adjust, then retry** — `403 mode_not_in_plan`: the `mode` isn't on the
+- **Adjust, then retry** - `403 mode_not_in_plan`: the `mode` isn't on the
   caller's plan; retry with `smart` or `fast`.
-- **Back off and retry** — `429` (honour `Retry-After`, cap at 3 attempts) and
+- **Back off and retry** - `429` (honour `Retry-After`, cap at 3 attempts) and
   `503` (agent saturated; exponential backoff; no quota charged).
-- **`500`** — server-side bug; retry only idempotent calls, once.
+- **`500`** - server-side bug; retry only idempotent calls, once.
 
-`/agent/ask` is **non-idempotent** unless you send an `Idempotency-Key` — two
+`/agent/ask` is **non-idempotent** unless you send an `Idempotency-Key` - two
 plain calls produce two answers and two charges, so never retry blindly.
 
 The full status-code table is in
@@ -224,8 +224,8 @@ Per-plan budgets and header details are in
 ## Security
 
 - Read the key from `NEUROAPI_API_KEY`; never hardcode, log, or commit it.
-- The full secret is shown once at creation. Lost it → revoke and re-mint.
-- Use `X-API-Key`, not `Authorization: Bearer` — the latter is silently wrong.
+- The full secret is shown once at creation. Lost it? Revoke and re-mint.
+- Use `X-API-Key`, not `Authorization: Bearer` - the latter is silently wrong.
 - Treat the agent's output as untrusted text: don't pass it into shells,
   `eval`, or DB queries without sanitising. It is research, not code.
 

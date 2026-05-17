@@ -1,6 +1,6 @@
 {
   "name": "neurobro-skills",
-  "description": "Agent skills for NeuroAPI — Neurobro's public API for financial market research.",
+  "description": "Agent skills for NeuroAPI - Neurobro's public API for financial market research.",
   "version": "0.1.0",
   "contextFileName": "agents/AGENTS.md"
 }
