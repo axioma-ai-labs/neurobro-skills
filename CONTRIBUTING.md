@@ -3,7 +3,7 @@
 ## Adding a new skill
 
 1. Create a directory under `skills/`. **The name must be prefixed
-   `neurobro-`** — that prefix is what makes every skill discoverable under a
+   `neurobro-`** - that prefix is what makes every skill discoverable under a
    "Neurobro" search on [skills.sh](https://www.skills.sh).
 
    ```
@@ -47,7 +47,7 @@
 
 - Never put a real API key in any tracked file. Skills read the key from the
   `NEUROAPI_API_KEY` environment variable.
-- Write instructions for an agent, not a human reader — be concrete and
+- Write instructions for an agent, not a human reader - be concrete and
   imperative.
-- Document failure modes (error codes, rate limits) — agents need them to
+- Document failure modes (error codes, rate limits) - agents need them to
   recover.

@@ -1,4 +1,4 @@
-# Neurobro Skills — agent context
+# Neurobro Skills - agent context
 
 This repository provides skills for working with **NeuroAPI**, Neurobro's
 paid public API for financial market research.
@@ -8,9 +8,9 @@ paid public API for financial market research.
 - Base URL: `https://api.neurobro.ai/api/v1`
 - Auth: `X-API-Key` header. Keys look like `neuro_<random>`. No OAuth, no
   `Authorization: Bearer`.
-- Core endpoint: `POST /agent/ask` — runs a financial research agent over a
+- Core endpoint: `POST /agent/ask` - runs a financial research agent over a
   natural-language `prompt` and returns an `answer`.
-- Free check: `GET /health` — verifies the key, consumes no quota.
+- Free check: `GET /health` - verifies the key, consumes no quota.
 
 ## API key
 
@@ -23,7 +23,7 @@ Never hardcode it, print it, log it, or commit it. Locally, copy
 Each directory under `skills/` is one skill with a `SKILL.md`. Load the skill
 relevant to the task:
 
-- `neurobro-market-research` — financial market research via `/agent/ask`:
+- `neurobro-market-research` - financial market research via `/agent/ask`:
   equity and crypto analysis, technical setups, fundamental research, macro
   outlooks, multi-asset investigations.
 

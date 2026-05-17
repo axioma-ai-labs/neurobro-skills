@@ -5,7 +5,7 @@
     "email": "support@neurobro.ai"
   },
   "metadata": {
-    "description": "Agent skills for NeuroAPI — Neurobro's public API for financial market research",
+    "description": "Agent skills for NeuroAPI - Neurobro's public API for financial market research",
     "version": "0.1.0"
   },
   "plugins": [
@@ -13,7 +13,7 @@
       "name": "neurobro-market-research",
       "source": "./skills/neurobro-market-research",
       "skills": "./",
-      "description": "Run financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask",
+      "description": "Run financial market research through the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask",
       "keywords": [
         "neurobro",
         "neuroapi",
@@ -23,6 +23,42 @@
         "crypto",
         "trading",
         "macro"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
+    },
+    {
+      "name": "neurobro-meme-hunting",
+      "source": "./skills/neurobro-meme-hunting",
+      "skills": "./",
+      "description": "Discover and risk-vet trending and newly launched memecoins through the NeuroAPI agent - scan trending DEX pools, filter by liquidity and age, and audit tokens for honeypots, rug-pull risk, and holder concentration",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "memecoin",
+        "meme-hunting",
+        "crypto",
+        "rug-pull",
+        "honeypot",
+        "token-audit"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
+    },
+    {
+      "name": "neurobro-trading-setup",
+      "source": "./skills/neurobro-trading-setup",
+      "skills": "./",
+      "description": "Build structured trade setups through the NeuroAPI agent - entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "trading-setup",
+        "trade-plan",
+        "crypto",
+        "stocks",
+        "technical-analysis",
+        "risk-reward"
       ],
       "category": "data-extraction",
       "version": "0.1.0"
