@@ -26,6 +26,12 @@ relevant to the task:
 - `neurobro-market-research` - financial market research via `/agent/ask`:
   equity and crypto analysis, technical setups, fundamental research, macro
   outlooks, multi-asset investigations.
+- `neurobro-meme-hunting` - discover and risk-vet trending and newly launched
+  memecoins: scan DEX pools, filter by liquidity and age, audit for honeypots,
+  rug-pull risk, and holder concentration.
+- `neurobro-trading-setup` - build structured trade setups: entry zones,
+  stop-loss, take-profit targets, and risk/reward ratios from technical
+  analysis and derivatives positioning.
 
 Each `SKILL.md` carries the full instructions, including request/response
 schemas, mode selection, billing, error handling, and rate limits.
