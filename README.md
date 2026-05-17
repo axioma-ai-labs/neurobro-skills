@@ -5,7 +5,6 @@
 <h1 align="center">Neurobro Skills</h1>
 
 <p align="center">
-  <a href="https://skills.sh/axioma-ai-labs/neurobro-skills"><img src="https://skills.sh/b/axioma-ai-labs/neurobro-skills" alt="skills.sh"></a>
   <a href="https://neuroapi.neurobro.ai"><img src="https://img.shields.io/badge/NeuroAPI-financial%20research-1f6feb" alt="NeuroAPI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="License: MIT"></a>
 </p>
