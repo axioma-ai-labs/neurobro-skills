@@ -1,0 +1,31 @@
+{
+  "name": "neurobro-skills",
+  "owner": {
+    "name": "Axioma AI",
+    "email": "support@neurobro.ai"
+  },
+  "metadata": {
+    "description": "Agent skills for NeuroAPI — Axioma AI's public API for financial market research",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "neurobro-market-research",
+      "source": "./skills/neurobro-market-research",
+      "skills": "./",
+      "description": "Run financial market research through the NeuroAPI agent — equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "market-research",
+        "finance",
+        "stocks",
+        "crypto",
+        "trading",
+        "macro"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
+    }
+  ]
+}

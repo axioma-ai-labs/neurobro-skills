@@ -1,0 +1,19 @@
+{
+  "name": "neurobro-skills",
+  "version": "0.1.0",
+  "description": "Agent skills for NeuroAPI — Axioma AI's public API for financial market research",
+  "author": {
+    "name": "Axioma AI",
+    "email": "support@neurobro.ai"
+  },
+  "homepage": "https://github.com/axioma-ai-labs/neurobro-skills",
+  "repository": "https://github.com/axioma-ai-labs/neurobro-skills",
+  "license": "MIT",
+  "keywords": [
+    "neurobro",
+    "neuroapi",
+    "market-research",
+    "finance",
+    "agent-skills"
+  ]
+}

@@ -1,0 +1,12 @@
+# Secrets — never commit a real key. .env.example is the committed template.
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
