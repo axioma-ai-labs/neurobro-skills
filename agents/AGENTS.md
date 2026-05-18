@@ -32,6 +32,10 @@ relevant to the task:
 - `neurobro-trading-setup` - build structured trade setups: entry zones,
   stop-loss, take-profit targets, and risk/reward ratios from technical
   analysis and derivatives positioning.
+- `neurobro-catalyst-watch` - build event-driven trade plans: map upcoming
+  catalysts (earnings, FOMC and macro prints, token unlocks, launches,
+  listings, regulatory decisions), assess what is priced in, and plan
+  positioning before and after the event.
 
 Each `SKILL.md` carries the full instructions, including request/response
 schemas, mode selection, billing, error handling, and rate limits.
