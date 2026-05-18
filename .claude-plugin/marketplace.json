@@ -62,6 +62,24 @@
       ],
       "category": "data-extraction",
       "version": "0.1.0"
+    },
+    {
+      "name": "neurobro-catalyst-watch",
+      "source": "./skills/neurobro-catalyst-watch",
+      "skills": "./",
+      "description": "Build event-driven trade plans through the NeuroAPI agent - map upcoming catalysts (earnings, FOMC and macro prints, token unlocks, mainnet launches, listings, ETF and regulatory decisions), assess what is priced in, and plan positioning before and after the event",
+      "keywords": [
+        "neurobro",
+        "neuroapi",
+        "catalyst-watch",
+        "event-driven",
+        "earnings",
+        "token-unlock",
+        "crypto",
+        "stocks"
+      ],
+      "category": "data-extraction",
+      "version": "0.1.0"
     }
   ]
 }
