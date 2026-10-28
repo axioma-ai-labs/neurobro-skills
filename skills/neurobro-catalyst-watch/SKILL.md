@@ -45,7 +45,10 @@ Every request goes to one endpoint:
 
 Authenticate with the `X-API-Key` header, reading the key from the
 `NEUROAPI_API_KEY` environment variable - never hardcode it. The body takes a
-`prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`).
+`prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`). A
+non-streaming run longer than 300 seconds returns `504` `agent_timeout`
+and is not billed, so set the client timeout above 300 seconds and prefer
+`stream: true` for `max`.
 
 ```bash
 curl -s https://api.neurobro.ai/api/v1/agent/ask \
@@ -196,7 +199,7 @@ def ask(prompt: str, mode: str = "smart") -> str:
         "https://api.neurobro.ai/api/v1/agent/ask",
         headers={"X-API-Key": os.environ["NEUROAPI_API_KEY"]},
         json={"prompt": prompt, "mode": mode},
-        timeout=90,
+        timeout=330,
     )
     res.raise_for_status()
     return res.json()["answer"]
@@ -233,6 +236,7 @@ inside the trading window.
   the plan; it reasons over expectations, positioning, and history together.
 - `max` - a watchlist-wide calendar across many assets, or a high-stakes event
   (a major earnings print, an FOMC decision) where the deepest reasoning pays.
+  Stream it (`stream: true`); a non-streaming run is stopped at 300 seconds.
 - `fast` - only for a quick "what events are coming" lookup with no analysis.
 
 ## Risk notes

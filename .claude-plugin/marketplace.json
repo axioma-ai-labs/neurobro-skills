@@ -31,7 +31,7 @@
       "name": "neurobro-meme-hunting",
       "source": "./skills/neurobro-meme-hunting",
       "skills": "./",
-      "description": "Discover and risk-vet trending and newly launched memecoins through the NeuroAPI agent - scan trending DEX pools, filter by liquidity and age, and audit tokens for honeypots, rug-pull risk, and holder concentration",
+      "description": "Discover and risk-vet trending and newly launched memecoins through the NeuroAPI agent - screen tokens for scam flags, mint and freeze authority, holder concentration, and buy/sell pressure, and filter new launches by age and liquidity",
       "keywords": [
         "neurobro",
         "neuroapi",
