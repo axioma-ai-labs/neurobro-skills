@@ -21,9 +21,9 @@ and rate limits, and writing prompts that produce useful research.
 
 | Skill | What it does |
 | --- | --- |
-| [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations. |
-| [`neurobro-meme-hunting`](skills/neurobro-meme-hunting/) | Discover and risk-vet trending and newly launched memecoins - scan trending DEX pools, filter by liquidity and age, audit for honeypots, rug-pull risk, and holder concentration. |
-| [`neurobro-trading-setup`](skills/neurobro-trading-setup/) | Build structured trade setups - entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. |
+| [`neurobro-market-research`](skills/neurobro-market-research/) | Financial market research via the NeuroAPI agent - equities (US, Indonesia, Brazil, Vietnam), crypto, commodities, and macro. |
+| [`neurobro-meme-hunting`](skills/neurobro-meme-hunting/) | Discover and risk-vet trending and newly launched memecoins - screen for scam flags, mint and freeze authority, holder concentration, and buy/sell pressure, and filter new launches by age and liquidity. |
+| [`neurobro-trading-setup`](skills/neurobro-trading-setup/) | Build structured trade setups for crypto, stocks, and commodities - entry zones, stop-loss, take-profit targets, and risk/reward ratios. |
 | [`neurobro-catalyst-watch`](skills/neurobro-catalyst-watch/) | Build event-driven trade plans - map upcoming catalysts (earnings, FOMC and macro prints, token unlocks, launches, listings, regulatory decisions), assess what is priced in, and plan positioning around the event. |
 
 Every skill name is prefixed `neurobro-`; more are added over time.
@@ -47,7 +47,8 @@ Or as a Claude Code plugin:
 
 1. [Create an API key](https://neuroapi.neurobro.ai) in the NeuroAPI dashboard
    under **API Keys**. Keys look like `neuro_<random>` and are shown only once.
-2. Make sure the account has an active plan - `/agent/ask` requires one.
+2. Make sure the account has an active plan. No plan returns `403`
+   `no_active_subscription` on `/agent/ask`.
 3. Provide the key via the `NEUROAPI_API_KEY` environment variable:
 
    ```bash
@@ -57,6 +58,14 @@ Or as a Claude Code plugin:
 
 `.env` is git-ignored, so the real key is never committed. `.env.example` is
 the committed template and holds no secret.
+
+## MCP
+
+The same agent is available over MCP at `https://api.neurobro.ai/api/v1/mcp`
+(Streamable HTTP), tool `ask_neuroapi`. Send `X-API-Key`.
+`Authorization: Bearer` is accepted on that endpoint only. The REST API
+does not accept it. Do not put the key in the URL. See
+[the endpoint reference](skills/neurobro-market-research/references/endpoints.md#mcp).
 
 ## Repo layout
 

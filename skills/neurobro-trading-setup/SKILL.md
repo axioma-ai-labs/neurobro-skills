@@ -1,16 +1,17 @@
 ---
 name: neurobro-trading-setup
-description: Builds structured trade setups through the NeuroAPI agent - entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto or stock asset.
+description: Builds structured trade setups through the NeuroAPI agent - entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto, stock, or commodity.
 license: MIT
 ---
 
 # Neurobro Trading Setup
 
-NeuroAPI's `/agent/ask` agent can read technical analysis (RSI, MACD,
-Bollinger Bands, support/resistance) and crypto derivatives positioning
-(funding, open interest, long/short ratio), and assemble them into a
-structured trade setup. This skill turns that into a repeatable workflow that
-produces a complete, validated trade plan - not a vague opinion.
+NeuroAPI's `/agent/ask` agent builds a structured trade setup for a crypto,
+stock, or commodity. It reads technical analysis (RSI, MACD, Bollinger
+Bands, support/resistance) and, for crypto, derivatives positioning
+(funding, open interest, long/short ratio). This skill turns that into a
+repeatable workflow that produces a complete, validated trade plan - not a
+vague opinion.
 
 ## Not financial advice - read this first
 
@@ -39,7 +40,9 @@ Every request goes to one endpoint:
 
 Authenticate with the `X-API-Key` header, reading the key from the
 `NEUROAPI_API_KEY` environment variable - never hardcode it. The body takes a
-`prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`).
+`prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`). A
+non-streaming run longer than 300 seconds returns `504` `agent_timeout`
+and is not billed. Use `stream: true` for long runs, including `max`.
 
 ```bash
 curl -s https://api.neurobro.ai/api/v1/agent/ask \
@@ -81,6 +84,7 @@ Build a trade setup for $SOL on the 4-hour timeframe. Include:
 - two take-profit targets (TP1, TP2)
 - risk/reward ratio to each target
 - the timeframe / expected horizon
+- confidence from 1 to 10
 Ground it in current technicals and perp funding/open interest.
 ```
 
@@ -114,6 +118,16 @@ A complete trade setup contains:
 | Risk/reward | R:R to each target, computed from entry, stop, and TP. |
 | Timeframe | The horizon the setup is valid for. |
 | Caveats | What would change the picture (e.g. a macro print, funding flip). |
+| Confidence | When present, a 1-10 score anchored to the setup's risk/reward and structure. |
+
+A directional view on a crypto, stock, or commodity gets that setup
+alongside the prose. Its 1-10 confidence is anchored to the setup's own
+risk/reward and structure. Setups whose allocation-weighted risk/reward
+does not clear an assumed fee + slippage cost are rejected outright.
+
+Pass `output_schema` (JSON Schema, object root) with `stream` false to
+read the fields from `output` (`answer` is `null`). Set the client timeout
+to at least 120 seconds. `stream: true` with `output_schema` returns `400`.
 
 ## Position sizing
 
@@ -140,7 +154,7 @@ def ask(prompt: str, mode: str = "smart") -> str:
         "https://api.neurobro.ai/api/v1/agent/ask",
         headers={"X-API-Key": os.environ["NEUROAPI_API_KEY"]},
         json={"prompt": prompt, "mode": mode},
-        timeout=90,
+        timeout=60,
     )
     res.raise_for_status()
     return res.json()["answer"]
@@ -168,7 +182,7 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 - `smart` (default) - the right choice for most setups; it reasons over
   technicals and derivatives positioning together.
 - `max` - multi-asset setups, conflicting signals, or higher-stakes plans
-  where the deepest reasoning is worth the extra cost.
+  where the deepest reasoning is worth the extra cost. Use `stream: true`.
 - `fast` - only for a quick level check where you do not need full context.
 
 ## Risk notes
