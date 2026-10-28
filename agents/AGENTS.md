@@ -28,15 +28,14 @@ Each directory under `skills/` is one skill with a `SKILL.md`. Load the skill
 relevant to the task:
 
 - `neurobro-market-research` - financial market research via `/agent/ask`:
-  equity and crypto analysis, technical setups, fundamental research, macro
-  outlooks, multi-asset investigations.
+  equities (US, Indonesia, Brazil, Vietnam), crypto, commodities, and macro.
 - `neurobro-meme-hunting` - discover and risk-vet trending and newly launched
   memecoins: screen for scam flags, mint and freeze authority, holder
   concentration, and buy/sell pressure, and filter new launches by age and
   liquidity.
-- `neurobro-trading-setup` - build structured trade setups: entry zones,
-  stop-loss, take-profit targets, and risk/reward ratios from technical
-  analysis and derivatives positioning.
+- `neurobro-trading-setup` - build structured trade setups for crypto,
+  stocks, and commodities: entry zones, stop-loss, take-profit targets, and
+  risk/reward ratios.
 - `neurobro-catalyst-watch` - build event-driven trade plans: map upcoming
   catalysts (earnings, FOMC and macro prints, token unlocks, launches,
   listings, regulatory decisions), assess what is priced in, and plan

@@ -13,7 +13,7 @@
       "name": "neurobro-market-research",
       "source": "./skills/neurobro-market-research",
       "skills": "./",
-      "description": "Run financial market research through the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask",
+      "description": "Run financial market research through the NeuroAPI agent - equities (US, Indonesia, Brazil, Vietnam), crypto, commodities, and macro via POST /agent/ask",
       "keywords": [
         "neurobro",
         "neuroapi",
@@ -49,7 +49,7 @@
       "name": "neurobro-trading-setup",
       "source": "./skills/neurobro-trading-setup",
       "skills": "./",
-      "description": "Build structured trade setups through the NeuroAPI agent - entry zones, stop-loss, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning",
+      "description": "Build structured trade setups for crypto, stocks, and commodities through the NeuroAPI agent - entry zones, stop-loss, take-profit targets, and risk/reward ratios",
       "keywords": [
         "neurobro",
         "neuroapi",

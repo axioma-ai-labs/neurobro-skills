@@ -1,6 +1,6 @@
 ---
 name: neurobro-market-research
-description: Runs financial market research through the NeuroAPI agent - equity and crypto analysis, technical setups, fundamental research, macro outlooks, and multi-asset investigations via POST /agent/ask. Use when the user asks for stock or token analysis, trade ideas, market commentary, earnings or macro questions, sector comparisons, or any financial research that needs live market reasoning.
+description: Runs financial market research through the NeuroAPI agent - equities (US, Indonesia, Brazil, Vietnam), crypto, commodities, and macro via POST /agent/ask. Use for stock, token, or commodity analysis, technicals, fundamentals, trade ideas, earnings, or macro questions.
 license: MIT
 ---
 
@@ -8,7 +8,8 @@ license: MIT
 
 NeuroAPI is Neurobro's paid public API. Its `/agent/ask` endpoint runs a
 financial research agent that answers natural-language questions about
-equities, crypto, macro, and cross-asset markets. This skill teaches an agent
+equities (US, Indonesia, Brazil, and Vietnam), crypto, commodities, and
+macro. This skill teaches an agent
 how to call it correctly - picking the right intelligence tier, handling
 billing and rate limits, and writing prompts that produce useful research.
 
@@ -29,9 +30,9 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 
 ## When to use this skill
 
-- Researching a single stock or token (fundamentals, technicals, narrative),
-  including Indonesia, Brazil, and Vietnam listings (quotes, fundamentals,
-  financials, technicals, and company name to ticker)
+- Researching a stock, token, or commodity (fundamentals, technicals, narrative).
+  Indonesia, Brazil, and Vietnam listings include quotes, fundamentals,
+  financials, technicals, and company name to ticker.
 - Building bull/bear cases or trade setups
 - Comparing assets, sectors, or factors
 - Macro questions - rates, inflation, central-bank outlooks

@@ -1,16 +1,17 @@
 ---
 name: neurobro-trading-setup
-description: Builds structured trade setups through the NeuroAPI agent - entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto or stock asset.
+description: Builds structured trade setups through the NeuroAPI agent - entry zones, stop-loss levels, take-profit targets, and risk/reward ratios grounded in technical analysis and derivatives positioning. Use when the user wants a trade plan, entry and exit levels, a stop-loss or take-profit, position sizing guidance, or a risk/reward assessment for a crypto, stock, or commodity.
 license: MIT
 ---
 
 # Neurobro Trading Setup
 
-NeuroAPI's `/agent/ask` agent can read technical analysis (RSI, MACD,
-Bollinger Bands, support/resistance) and crypto derivatives positioning
-(funding, open interest, long/short ratio), and assemble them into a
-structured trade setup. This skill turns that into a repeatable workflow that
-produces a complete, validated trade plan - not a vague opinion.
+NeuroAPI's `/agent/ask` agent builds a structured trade setup for a crypto,
+stock, or commodity. It reads technical analysis (RSI, MACD, Bollinger
+Bands, support/resistance) and, for crypto, derivatives positioning
+(funding, open interest, long/short ratio). This skill turns that into a
+repeatable workflow that produces a complete, validated trade plan - not a
+vague opinion.
 
 ## Not financial advice - read this first
 
