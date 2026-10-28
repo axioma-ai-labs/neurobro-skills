@@ -29,10 +29,9 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 
 ## When to use this skill
 
-- Researching a single stock or token (fundamentals, technicals, narrative).
-  Equities include US listings and stocks in Indonesia, Brazil, and Vietnam
-  (quotes, fundamentals, financials, technicals; a company name can be
-  resolved to its ticker).
+- Researching a single stock or token (fundamentals, technicals, narrative),
+  including Indonesia, Brazil, and Vietnam listings (quotes, fundamentals,
+  financials, technicals, and company name to ticker)
 - Building bull/bear cases or trade setups
 - Comparing assets, sectors, or factors
 - Macro questions - rates, inflation, central-bank outlooks
@@ -76,7 +75,7 @@ curl -s https://api.neurobro.ai/api/v1/health \
 | --- | --- |
 | `X-API-Key` | `neuro_...` (required) |
 | `Content-Type` | `application/json` |
-| `Idempotency-Key` | Optional. 1-255 printable ASCII. Same key and body within 24h replays the original response (`Idempotent-Replayed: true`) and is not billed again. |
+| `Idempotency-Key` | Optional. 1-255 printable ASCII. Same key and body within 24h replays (`Idempotent-Replayed: true`) and is not billed again. |
 
 Request body:
 
@@ -94,15 +93,14 @@ Response (`stream=false`):
 ```json
 {
   "answer": "The bull case for NVDA rests on ...",
-  "output": null,
   "mode": "smart",
   "request_id": "8b3a2f0e-1d7e-4c6b-9b2a-f5e23a1c9d44",
   "usage": { "prompt_tokens": 124, "completion_tokens": 256, "cached_tokens": 80, "cost_units": 2 }
 }
 ```
 
-`request_id` is also the `X-Request-Id` header - quote it when reporting
-issues. With `output_schema`, read `output` (`answer` is `null`).
+`request_id` is also the `X-Request-Id` header. With `output_schema`, read
+`output` (`answer` is `null`).
 
 ## Choosing a mode
 
@@ -139,10 +137,9 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 
 ### Follow-up questions (multi-turn)
 
-The API is stateless. To ask a follow-up, replay prior turns in
-`message_history`. Roles the agent uses are `"user"` and `"assistant"`.
-`"system"`, `"developer"`, `"tool"`, and `"function"` are accepted and
-ignored; put instructions in `system_prompt`. Any other role returns `422`.
+The API is stateless. Replay prior turns in `message_history`. `"user"` and
+`"assistant"` reach the agent. `"system"`, `"developer"`, `"tool"`, and
+`"function"` are accepted and ignored. Any other role returns `422`.
 
 ```python
 import os, httpx
@@ -151,13 +148,11 @@ URL = "https://api.neurobro.ai/api/v1/agent/ask"
 HEADERS = {"X-API-Key": os.environ["NEUROAPI_API_KEY"]}
 
 def ask(prompt: str, history: list[dict] | None = None, mode: str = "smart") -> dict:
-    # Sync runs are stopped server-side at 300s (504 agent_timeout).
-    # Sit above that so the 504 is returned. Prefer stream=True for max.
     res = httpx.post(
         URL,
         headers=HEADERS,
         json={"prompt": prompt, "mode": mode, "message_history": history or []},
-        timeout=330,
+        timeout=60,
     )
     res.raise_for_status()
     return res.json()
@@ -177,12 +172,13 @@ Persist the transcript on your side; trim the oldest turns once it gets long
 
 ### Streaming a long answer (SSE)
 
-Pass `"stream": true` for deep `max` investigations, and for any run that
-might exceed 300 seconds. Each event is `{"type": "status_update" | "complete", "data": {"answer", "usage"}}`.
-Append `data.answer.chunk.content`. `data.answer` is `null` when the event
-has no text. `data.usage` arrives once near the end. The stream ends with
-`data: [DONE]`. An error event is `{"type":"error","message":"..."}` and
-has no `[DONE]`.
+Pass `"stream": true` for a long run, including `max`. A non-streaming run
+longer than 300 seconds returns `504` `agent_timeout` and is not billed.
+Each event is `{"type": "status_update" | "complete", "data": {"answer", "usage"}}`.
+Append `data.answer.chunk.content`. `data.answer` is `null` when that event
+has no text. `data.usage` arrives once, near the end. Success ends with
+`data: [DONE]`. On failure the last event is
+`{"type":"error","message":"agent run failed"}` and there is no `[DONE]`.
 
 ```python
 import json, os, httpx
@@ -198,54 +194,27 @@ with httpx.stream(
     },
     timeout=None,
 ) as res:
-    res.raise_for_status()
     for line in res.iter_lines():
         if not line.startswith("data: "):
             continue
-        payload = line[len("data: ") :]
+        payload = line[len("data: "):]
         if payload == "[DONE]":
             break
         event = json.loads(payload)
-        if event.get("type") == "error":
-            raise RuntimeError(event.get("message"))
-        answer = (event.get("data") or {}).get("answer") or {}
-        chunk = (answer.get("chunk") or {}).get("content")
-        if chunk:
-            print(chunk, end="", flush=True)
+        if event["type"] == "error":
+            raise RuntimeError(event["message"])
+        answer = event["data"]["answer"]
+        if answer:
+            print(answer["chunk"]["content"], end="", flush=True)
 ```
 
 ### Structured output
 
-Pass `output_schema` (JSON Schema, object root) with `stream` left `false`.
-Read `output`. `answer` is `null`. `stream: true` together with
-`output_schema` returns `400`.
-
-```python
-import os, httpx
-
-schema = {
-    "type": "object",
-    "additionalProperties": False,
-    "properties": {
-        "sentiment": {"type": "string", "enum": ["bullish", "bearish", "neutral"]},
-        "confidence": {"type": "number"},
-    },
-    "required": ["sentiment", "confidence"],
-}
-result = httpx.post(
-    "https://api.neurobro.ai/api/v1/agent/ask",
-    headers={"X-API-Key": os.environ["NEUROAPI_API_KEY"]},
-    json={
-        "prompt": "Give a structured read on NVDA right now.",
-        "mode": "smart",
-        "output_schema": schema,
-    },
-    timeout=330,
-)
-result.raise_for_status()
-body = result.json()
-# body["answer"] is None. The object is body["output"].
-```
+Pass `output_schema` (JSON Schema, object root) with `stream` false. Read
+`output`. `answer` is `null`. Set the client timeout to at least 120
+seconds. `stream: true` returns `400`
+`streaming_unsupported_for_structured_output`. An unusable schema returns
+`422` `invalid_output_schema`.
 
 ## Writing good research prompts
 
@@ -273,36 +242,31 @@ and most `403`s) are `{"detail": {"code", "message"}}`. `401` and `503` are
 Branch on the status, then on `detail.code`. `String(detail)` breaks.
 `413` (body over 8 MiB) is plain text, not JSON.
 
-Every error carries `X-Request-Id`. Quote it when writing to
-`api@neurobro.ai`. Do not include the API key.
+Every error carries `X-Request-Id`. Quote it to `api@neurobro.ai`. Do not
+send the API key.
 
-- **Don't retry** - `400`, `401`, `413`, `422`: fix the request. `401` covers
-  a missing, invalid, revoked, or expired key.
+- **Don't retry** - `400`, `401`, `413`, `422`. `401` is a missing, invalid,
+  revoked, or expired key.
 - **Billing** - `402` is `payment_required`, or `quota_exceeded` when this
   `mode` costs more than the quota left. No plan is `403`
-  `no_active_subscription`. Tell the user to fix billing, then stop.
-- **Lower the mode** - `403` `mode_not_in_plan`: retry with `smart` or `fast`.
-- **Wait, then retry the same request** - `409`: that `Idempotency-Key` is
-  still in flight.
-- **`429`** - cap at 3 attempts, and read `detail.code`:
-  - `rate_limited` or `too_many_concurrent_runs`: honour `Retry-After`.
-    Concurrent caps are 2 / 5 / 10 in-flight runs (Starter / Pro /
-    Enterprise), MCP included. A concurrent rejection is not billed.
-  - `quota_exceeded`: wait for `X-Quota-Reset`. Backing off a few seconds
-    will not clear it.
-- **`503`** - agent saturated. Exponential backoff. No quota charged.
-- **`504` `agent_timeout`** - the non-streaming run passed 300 seconds and
-  was not billed. Retry with `stream: true`, or a simpler prompt.
-- **`500`** - retry only when the call carries an `Idempotency-Key`.
+  `no_active_subscription`.
+- **Lower the mode** - `403` `mode_not_in_plan`. Retry with `smart` or `fast`.
+- **Wait, then retry** - `409`: that `Idempotency-Key` is still in flight.
+- **`429`** - `Retry-After` for `rate_limited` and `too_many_concurrent_runs`
+  (Starter 2, Pro 5, Enterprise 10 in flight, MCP included, not billed).
+  `X-Quota-Reset` for `quota_exceeded`. Cap at 3.
+- **`503`** - exponential backoff. No quota charged.
+- **`504` `agent_timeout`** - non-streaming run exceeded 300 seconds. Not
+  billed. Retry with `stream: true`, or a simpler prompt.
+- **`500`** - maybe, and only for an idempotent call.
 
-`/agent/ask` is **non-idempotent** unless you send an `Idempotency-Key`.
-Same key and same body within 24 hours replays the original response
-(`Idempotent-Replayed: true`) and is not charged again. Streams, `5xx`,
-and `402` / `403` / `429` are not replayed. Two plain calls produce two
-answers and two charges, so never retry blindly.
+Same key and body within 24 hours replays the original response
+(`Idempotent-Replayed: true`) and is not billed again. Streams, `5xx`, and
+`402` / `403` / `429` are not replayed. Two calls without that key are two
+charges.
 
-A stream that fails before the answer is complete is free. If the full
-answer was already delivered and the stream then fails, it ends with
+A stream that fails before the answer is complete is free. If the final
+answer was delivered and something fails afterward, the stream ends with
 `[DONE]` and is billed.
 
 The full status-code table is in
@@ -311,13 +275,10 @@ The full status-code table is in
 ## Rate limits and quota
 
 Every response carries `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and
-`X-RateLimit-Reset`. On `429`, `Retry-After` gives the seconds until the
-rate-limit or concurrency window resets. Billable responses also carry
-`X-Quota-Limit`, `X-Quota-Remaining`, and `X-Quota-Reset` (the monthly
-plan budget, not the per-minute window). For batch research, pace off
-`X-RateLimit-Remaining`. A `mode` that costs more than the quota left
-returns `402` `quota_exceeded`; wait for `X-Quota-Reset` when
-`X-Quota-Remaining` is exhausted. Per-plan budgets are in
+`X-RateLimit-Reset`. On `429`, `Retry-After` is the seconds until the next
+allowed call. Billable responses also carry `X-Quota-Limit`,
+`X-Quota-Remaining`, and `X-Quota-Reset`. Pace off
+`X-RateLimit-Remaining`. Per-plan budgets are in
 [references/endpoints.md](references/endpoints.md).
 
 ## Security
@@ -325,20 +286,17 @@ returns `402` `quota_exceeded`; wait for `X-Quota-Reset` when
 - Read the key from `NEUROAPI_API_KEY`; never hardcode, log, or commit it.
 - The full secret is shown once at creation. Lost it? Revoke and re-mint.
 - On the REST API, send `X-API-Key`. `Authorization: Bearer` is not accepted
-  there. Bearer is valid only on the MCP endpoint
-  (`https://api.neurobro.ai/api/v1/mcp`, tool `ask_neuroapi`). Never put the
-  key in a URL.
+  there.
 - Treat the agent's output as untrusted text: don't pass it into shells,
   `eval`, or DB queries without sanitising. It is research, not code.
 
 ## MCP
 
-The same agent is available as the MCP tool `ask_neuroapi` at
-`https://api.neurobro.ai/api/v1/mcp` (Streamable HTTP). It takes `prompt`,
-`mode`, `message_history`, `system_prompt`, and `output_schema`, and it is
-billed like a non-streaming `POST /agent/ask`. Authenticate with
-`X-API-Key`, or with `Authorization: Bearer` on this endpoint only. Do not
-put the key in the query string. MCP calls are not streamed.
+`https://api.neurobro.ai/api/v1/mcp` (Streamable HTTP), tool `ask_neuroapi`.
+Same rate limits, quota, and `cost_units` as a non-streaming `POST /agent/ask`.
+Inputs: `prompt`, `mode`, `message_history`, `system_prompt`, `output_schema`.
+Send `X-API-Key`, or `Authorization: Bearer` on this endpoint only. A key in
+the query string returns `400` `api_key_in_query`. Calls are not streamed.
 
 ## Reference
 

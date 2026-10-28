@@ -41,8 +41,7 @@ Authenticate with the `X-API-Key` header, reading the key from the
 `NEUROAPI_API_KEY` environment variable - never hardcode it. The body takes a
 `prompt` and a `mode` (`fast` | `smart` | `max`, default `smart`). A
 non-streaming run longer than 300 seconds returns `504` `agent_timeout`
-and is not billed, so set the client timeout above 300 seconds and prefer
-`stream: true` for `max`.
+and is not billed. Use `stream: true` for long runs, including `max`.
 
 ```bash
 curl -s https://api.neurobro.ai/api/v1/agent/ask \
@@ -88,10 +87,6 @@ Build a trade setup for $SOL on the 4-hour timeframe. Include:
 Ground it in current technicals and perp funding/open interest.
 ```
 
-When a setup includes a confidence score, it is a 1-10 figure anchored to
-that setup's risk/reward and structure. Report it with the setup. It is
-part of the research, not a reason to take the trade.
-
 ### 3. Validate the setup
 
 Never pass a setup through unchecked. Confirm:
@@ -124,16 +119,14 @@ A complete trade setup contains:
 | Caveats | What would change the picture (e.g. a macro print, funding flip). |
 | Confidence | When present, a 1-10 score anchored to the setup's risk/reward and structure. |
 
-A prompt that states a directional view on a crypto, stock, or commodity
-gets a structured setup (entry, stop, take-profits, risk/reward) alongside
-the prose. Setups whose allocation-weighted risk/reward does not clear the
-agent's assumed fee and slippage cost are dropped rather than returned as
-marginal trades. That is still a hypothesis. Restate that it is not
-financial advice.
+A directional view on a crypto, stock, or commodity gets that setup
+alongside the prose. Its 1-10 confidence is anchored to the setup's own
+risk/reward and structure. Setups whose allocation-weighted risk/reward
+does not clear an assumed fee + slippage cost are rejected outright.
 
-To receive the fields as data, pass `output_schema` (a JSON Schema with an
-object root) and leave `stream` false. The object is on `output` and
-`answer` is `null`. `output_schema` with `stream: true` returns `400`.
+Pass `output_schema` (JSON Schema, object root) with `stream` false to
+read the fields from `output` (`answer` is `null`). Set the client timeout
+to at least 120 seconds. `stream: true` with `output_schema` returns `400`.
 
 ## Position sizing
 
@@ -160,7 +153,7 @@ def ask(prompt: str, mode: str = "smart") -> str:
         "https://api.neurobro.ai/api/v1/agent/ask",
         headers={"X-API-Key": os.environ["NEUROAPI_API_KEY"]},
         json={"prompt": prompt, "mode": mode},
-        timeout=330,
+        timeout=60,
     )
     res.raise_for_status()
     return res.json()["answer"]
@@ -188,8 +181,7 @@ curl -s https://api.neurobro.ai/api/v1/agent/ask \
 - `smart` (default) - the right choice for most setups; it reasons over
   technicals and derivatives positioning together.
 - `max` - multi-asset setups, conflicting signals, or higher-stakes plans
-  where the deepest reasoning is worth the extra cost. Stream it
-  (`stream: true`); a non-streaming `max` run is stopped at 300 seconds.
+  where the deepest reasoning is worth the extra cost. Use `stream: true`.
 - `fast` - only for a quick level check where you do not need full context.
 
 ## Risk notes
